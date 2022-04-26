@@ -51,7 +51,7 @@ function dev-mode()
   docker-compose exec fpm  bin/magento module:disable Magento_TwoFactorAuth
 }
 
-function clear-compiled-code ()
+function clear-compiled()
 {
   echo -e "${On_Green}Removing compiled code...${Color_Off}"
   echo -e "Removing generated/* directory"
@@ -156,10 +156,10 @@ case "$1" in
     fullupgrade
     ;;
   clear-static)
-    clear_static
+    clear-static
     ;;
   clear-compiled)
-    clear_compiled
+    clear-compiled
     ;;
   install)
     install

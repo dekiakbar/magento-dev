@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70ba60ab42cba48f61f9661371a2f63a",
+    "content-hash": "ec9d7a683af4c301cc7a9a768a8c4017",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -1317,6 +1317,89 @@
                 "source": "https://github.com/DASPRiD/Enum/tree/1.0.3"
             },
             "time": "2020-10-02T16:03:48+00:00"
+        },
+        {
+            "name": "deki/magento-2-core",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dekiakbar/magento-2-core.git",
+                "reference": "a58e28bd8b36a7ea494f6e8058acf1b14b42f62f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dekiakbar/magento-2-core/zipball/a58e28bd8b36a7ea494f6e8058acf1b14b42f62f",
+                "reference": "a58e28bd8b36a7ea494f6e8058acf1b14b42f62f",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Deki\\Core\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Deki Akbar",
+                    "email": "dekiakbar@linuxmail.org"
+                }
+            ],
+            "description": "magento 2 core module",
+            "support": {
+                "issues": "https://github.com/dekiakbar/magento-2-core/issues",
+                "source": "https://github.com/dekiakbar/magento-2-core/tree/1.0.0"
+            },
+            "time": "2021-11-14T12:27:47+00:00"
+        },
+        {
+            "name": "deki/magento-2-customer-address",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dekiakbar/magento-2-customer-address.git",
+                "reference": "fdfbf90a15c84737a8469a1d1e55f506a0cd362d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dekiakbar/magento-2-customer-address/zipball/fdfbf90a15c84737a8469a1d1e55f506a0cd362d",
+                "reference": "fdfbf90a15c84737a8469a1d1e55f506a0cd362d",
+                "shasum": ""
+            },
+            "require": {
+                "deki/magento-2-core": "^1.0.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Deki\\CustomerAddress\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Deki Akbar",
+                    "email": "dekiakbar@linuxmail.org"
+                }
+            ],
+            "description": "customer city and postcode autocomplete ",
+            "support": {
+                "issues": "https://github.com/dekiakbar/magento-2-customer-address/issues",
+                "source": "https://github.com/dekiakbar/magento-2-customer-address/tree/1.0.1"
+            },
+            "time": "2022-04-24T14:32:38+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -27348,5 +27431,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

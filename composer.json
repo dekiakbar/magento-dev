@@ -17,6 +17,7 @@
     },
     "version": "2.4.4",
     "require": {
+        "deki/magento-2-customer-address": "^1.0",
         "magento/composer-dependency-version-audit-plugin": "~0.1",
         "magento/composer-root-update-plugin": "~2.0",
         "magento/module-bundle-sample-data": "100.4.*",
