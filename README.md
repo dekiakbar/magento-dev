@@ -8,8 +8,9 @@ Magento 2.4.4 with docker compose, just for custom module development purpose.
 
 # Install
 
-Before using this, please install docker.
+Before using this, please install docker. 
 
 ## Build image and start container
 
 > docker-compose up --build --remove-orphans -d
+> run `bin/manager` from magento root for custom development script
