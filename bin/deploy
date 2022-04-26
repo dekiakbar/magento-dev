@@ -54,15 +54,21 @@ function clear_cache()
   docker-compose exec fpm bin/magento cache:clean
 }
 
-recompile_all ()
+function fullupgrade ()
 {
   docker-compose exec fpm bin/magento setup:upgrade
   docker-compose exec fpm bin/magento setup:di:compile
   docker-compose exec fpm bin/magento setup:static-content:deploy -f
 }
 
-rebuild_container()
+function rebuild_container()
 {
   docker-compose up --build --force-recreate --no-deps --remove-orphans -d
+}
+
+function install_sample_data()
+{
+  docker-compose exec fpm bin/magento sampledata:deploy
+  fullupgrade
 }
 
