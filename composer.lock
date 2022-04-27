@@ -1360,16 +1360,16 @@
         },
         {
             "name": "deki/magento-2-customer-address",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dekiakbar/magento-2-customer-address.git",
-                "reference": "fdfbf90a15c84737a8469a1d1e55f506a0cd362d"
+                "reference": "99759c94e4e92bb3fa9a8daf282de02c0c628f36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dekiakbar/magento-2-customer-address/zipball/fdfbf90a15c84737a8469a1d1e55f506a0cd362d",
-                "reference": "fdfbf90a15c84737a8469a1d1e55f506a0cd362d",
+                "url": "https://api.github.com/repos/dekiakbar/magento-2-customer-address/zipball/99759c94e4e92bb3fa9a8daf282de02c0c628f36",
+                "reference": "99759c94e4e92bb3fa9a8daf282de02c0c628f36",
                 "shasum": ""
             },
             "require": {
@@ -1397,9 +1397,9 @@
             "description": "customer city and postcode autocomplete ",
             "support": {
                 "issues": "https://github.com/dekiakbar/magento-2-customer-address/issues",
-                "source": "https://github.com/dekiakbar/magento-2-customer-address/tree/1.0.1"
+                "source": "https://github.com/dekiakbar/magento-2-customer-address/tree/1.0.2"
             },
-            "time": "2022-04-24T14:32:38+00:00"
+            "time": "2022-04-26T14:28:30+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -27431,5 +27431,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

@@ -1,4 +1,4 @@
-# ./vendor/bin/ece-docker 'build:compose' --mode=developer --php='7.4' --db-image=mariadb --db='10.3' --es='7.5' --no-varnish
+# ./vendor/bin/ece-docker 'build:compose' --mode=developer --php='7.4' --db-image=mariadb --db='10.3' --es='7.5' --no-varnish --with-selenium --with-test
 version: '2.1'
 services:
   db:
@@ -87,6 +87,35 @@ services:
     depends_on:
       web:
         condition: service_started
+  selenium:
+    hostname: selenium.magento2.docker
+    image: 'selenium/standalone-chrome:latest'
+    ports:
+      - 4444
+    extends: generic
+    shm_size: 2gb
+    networks:
+      magento:
+        aliases:
+          - selenium.magento2.docker
+    depends_on:
+      web:
+        condition: service_started
+  test:
+    hostname: test.magento2.docker
+    image: 'magento/magento-cloud-docker-php:7.4-cli-1.3.2'
+    extends: generic
+    volumes:
+      - '.:/app:delegated'
+    networks:
+      magento:
+        aliases:
+          - test.magento2.docker
+    depends_on:
+      db:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
   generic:
     hostname: generic.magento2.docker
     image: 'magento/magento-cloud-docker-php:7.4-cli-1.3.2'
