@@ -14,7 +14,7 @@ services:
       - '3306'
     volumes:
       - '.:/app:delegated'
-      - 'magento244-magento-db:/var/lib/mysql'
+      - 'app-magento-db:/var/lib/mysql'
     healthcheck:
       test: 'mysqladmin ping -h localhost -pmagento2'
       interval: 30s
@@ -154,7 +154,7 @@ services:
       elasticsearch:
         condition: service_healthy
 volumes:
-  magento244-magento-db: {  }
+  app-magento-db: {  }
 networks:
   magento:
     driver: bridge

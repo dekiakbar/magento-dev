@@ -22,11 +22,12 @@ function install()
   --db-name=magento2 \
   --db-user=magento2 \
   --db-password=magento2 \
+  --backend-frontname=admin \
   --admin-firstname=admin \
   --admin-lastname=admin \
   --admin-email=admin@admin.com \
   --admin-user=admin \
-  --admin-password=admin123 \
+  --admin-password=123123q \
   --language=en_US \
   --currency=USD \
   --timezone=America/Chicago \
@@ -62,6 +63,8 @@ function dev-mode()
   echo -e "Enable admin account sharring"
   $DEPLOY_CONTAINER magento-command config:set admin/security/admin_account_sharing 1
 
+  #set as developer mode (custom)
+  dev-mode
 }
 
 function clear-compiled()
