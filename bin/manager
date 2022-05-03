@@ -37,6 +37,9 @@ function install()
   --elasticsearch-port=9200 \
   --elasticsearch-index-prefix=magento2 \
   --elasticsearch-timeout=15
+  
+  #set as developer mode (custom)
+  dev-mode
 }
 
 function dev-mode()
@@ -62,9 +65,6 @@ function dev-mode()
   $DEPLOY_CONTAINER magento-command config:set web/secure/use_in_adminhtml 0
   echo -e "Enable admin account sharring"
   $DEPLOY_CONTAINER magento-command config:set admin/security/admin_account_sharing 1
-
-  #set as developer mode (custom)
-  dev-mode
 }
 
 function clear-compiled()
