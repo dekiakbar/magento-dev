@@ -9,14 +9,14 @@ return [
                 'password' => 'magento2',
                 'username' => 'magento2',
                 'port' => '3306',
-                'type' => 'mysql:10.3'
+                'type' => 'mysql:10.4'
             ]
         ],
         'elasticsearch' => [
             [
                 'host' => 'elasticsearch',
                 'port' => '9200',
-                'type' => 'elasticsearch:7.5'
+                'type' => 'elasticsearch:7.11'
             ]
         ]
     ])),
