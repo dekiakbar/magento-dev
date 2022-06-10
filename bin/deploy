@@ -1,0 +1,58 @@
+#!/bin/bash
+echo "**** Starting Deployment ****" 
+echo "** Removing core var/ folder **" 
+rm -rf var/view_preprocessed/* pub/static/adminhtml/* pub/static/frontend/* pub/static/adminhtml/* generated/* var/cache/*
+read -r -p "Run Setup Upgrade? [Y/n] " input
+case $input in
+    [yY][eE][sS]|[yY])
+		echo "** Starting uprading module **" 
+		php -dmemory_limit=-1 bin/magento setup:upgrade
+		;;
+
+    [nN][oO]|[nN])
+		echo "Upgrade Module skipped ---proceed to next step---"
+       		;;
+
+    *)
+	echo "Invalid input..."
+	exit 1
+	;;
+esac
+
+read -r -p "Run Code Compilation? [Y/n] " input
+case $input in
+    [yY][eE][sS]|[yY])
+		echo "** Starting Code Compilation **" 
+		php -dmemory_limit=-1 bin/magento setup:di:compile
+		;;
+
+    [nN][oO]|[nN])
+		echo "Code Compilation skipped ---proceed to next step---"
+       		;;
+
+    *)
+	echo "Invalid input..."
+	exit 1
+	;;
+esac
+
+read -r -p "Run Static Files Deployment? [Y/n] " input
+case $input in
+    [yY][eE][sS]|[yY])
+		echo "** Starting static files deployment **" 
+		php -dmemory_limit=-1 bin/magento setup:static-content:deploy -f
+		;;
+
+    [nN][oO]|[nN])
+		echo "Static Files Deployment skipped ---proceed to next step---"
+       		;;
+
+    *)
+	echo "Invalid input..."
+	exit 1
+	;;
+esac
+echo "** Clearing Caches **"
+php -dmemory_limit=-1 bin/magento cache:flush
+
+echo "Deployment done"
