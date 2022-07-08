@@ -72,3 +72,5 @@ atlassian*
 /generated/*
 !/generated/.htaccess
 .DS_Store
+
+/app/code/*

@@ -77,14 +77,7 @@ function clear-compiled()
 function clear-static()
 {
   echo -e "${On_Green}Clear static content...${Color_Off}"
-  echo -e "Removing var/cache directory"
-  $BUILD_CONTAINER rm -rf var/cache/*
-  echo -e "Removing var/page_cache directory"
-  $BUILD_CONTAINER rm -rf var/page_cache/*
-  echo -e "Removing var/view_preprocessed directory"
-  $BUILD_CONTAINER rm -rf var/view_preprocessed/*
-  echo -e "Removing pub/static directory"
-  $BUILD_CONTAINER rm -rf pub/static/*
+  $BUILD_CONTAINER rm -rf var/cache/* var/page_cache/* var/view_preprocessed/* pub/static/*
 }
 
 function clear-cache()
@@ -136,15 +129,15 @@ USAGE="Development script
   install-sample-data   Install sample data
   magento-docker        Run bin/magento-docker command. ie: bin/manager magento-docker --help
   composer              Run composer
-  cs                    Run ./vendor/bin/phpcs command (Coding standard). ie: bin/manager cs --help
-  cbf                   Run ./vendor/bin/phpcbf command (Auto fix Coding standard). ie: bin/manager cbf --help
-  ece-docker            Run ./vendor/bin/ece-docker command. ie: bin/manager ece-docker --help
-
+  
 \033[33mCLI container commands:\033[0m
+  ece-command           Run ece-tools / ece-command CLI commands. https://devdocs.magento.com/cloud/reference/ece-tools-reference.html
+  ece-docker            Run ./vendor/bin/ece-docker command. ie: bin/manager ece-docker --help
   cloud-build           Build the application in production mode, configured by the build hook in the .magento.app.yml file
   cloud-deploy          Deploy the application, configured by the deploy hook in the .magento.app.yml file
   cloud-post-deploy     Run post deploy hooks, configured by the post deploy hook in the .magento.app.yml file
-  ece-command           Run ece-tools CLI commands. https://devdocs.magento.com/cloud/reference/ece-tools-reference.html
+  cs                    Run ./vendor/bin/phpcs command (Coding standard). ie: bin/manager cs --help
+  cbf                   Run ./vendor/bin/phpcbf command (Auto fix Coding standard). ie: bin/manager cbf --help
   magento-command       Run bin/magento command. ie: bin/manager magento cache:flush
   mftf-command          Run MFTF command for testing
   run-cron              Run cron jobs
@@ -199,8 +192,8 @@ case "$1" in
   cloud-post-deploy)
     $DEPLOY_CONTAINER cloud-post-deploy ${*:2}
     ;;
-  ece-command)
-    $DEPLOY_CONTAINER ece-command ${*:2}
+  ece-tools)
+    $BUILD_CONTAINER ece-command ${*:2}
     ;;
   magento-command)
     $DEPLOY_CONTAINER magento-command ${*:2}
