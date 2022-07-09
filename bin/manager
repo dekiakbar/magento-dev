@@ -11,35 +11,44 @@ On_Green='\033[42m'
 DEPLOY_CONTAINER="docker-compose run --rm --no-deps deploy"
 BUILD_CONTAINER="docker-compose run --rm --no-deps build"
 
+#magento ENV path
+MAGENTO_ENV=".docker/config.env"
+
 function install()
 {
-  echo -e "${On_Green}Installing magento...${Color_Off}"
-  $DEPLOY_CONTAINER rm -rf app/etc/env.php
-  $DEPLOY_CONTAINER rm -rf app/etc/config.php
-  $DEPLOY_CONTAINER magento-command setup:install \
-  --base-url=http://magento2.docker/ \
-  --db-host=db.magento2.docker \
-  --db-name=magento2 \
-  --db-user=magento2 \
-  --db-password=magento2 \
-  --backend-frontname=admin \
-  --admin-firstname=admin \
-  --admin-lastname=admin \
-  --admin-email=admin@admin.com \
-  --admin-user=admin \
-  --admin-password=123123q \
-  --language=en_US \
-  --currency=USD \
-  --timezone=America/Chicago \
-  --use-rewrites=1 \
-  --search-engine=elasticsearch7 \
-  --elasticsearch-host=elasticsearch.magento2.docker \
-  --elasticsearch-port=9200 \
-  --elasticsearch-index-prefix=magento2 \
-  --elasticsearch-timeout=15
-  
-  #set as developer mode (custom)
-  dev-mode
+  MAGENTO_DOMAIN=$(get-magento-domain)
+
+  if [[ $MAGENTO_DOMAIN != '' ]];then
+    echo -e "${On_Green}Installing magento...${Color_Off}"
+    $DEPLOY_CONTAINER rm -rf app/etc/env.php
+    $DEPLOY_CONTAINER rm -rf app/etc/config.php
+    $DEPLOY_CONTAINER magento-command setup:install \
+    --base-url="http://${MAGENTO_DOMAIN}/" \
+    --db-host="db.${MAGENTO_DOMAIN}"\
+    --db-name=magento2 \
+    --db-user=magento2 \
+    --db-password=magento2 \
+    --backend-frontname=admin \
+    --admin-firstname=admin \
+    --admin-lastname=admin \
+    --admin-email=admin@admin.com \
+    --admin-user=admin \
+    --admin-password=123123q \
+    --language=en_US \
+    --currency=USD \
+    --timezone=America/Chicago \
+    --use-rewrites=1 \
+    --search-engine=elasticsearch7 \
+    --elasticsearch-host="elasticsearch.${MAGENTO_DOMAIN}" \
+    --elasticsearch-port=9200 \
+    --elasticsearch-index-prefix=magento2 \
+    --elasticsearch-timeout=15
+    
+    #set as developer mode (custom)
+    dev-mode
+  else
+    echo -e "${GREEN} Magento domain not found in ${MAGENTO_ENV} ${Color_Off}"
+  fi
 }
 
 function dev-mode()
@@ -113,6 +122,49 @@ function install-sample-data()
   fullupgrade
 }
 
+# get --host value and asign to MAGENTO_DOMAIN var 
+# in .docker/config.env
+# this is used in docker-compose when build new container
+# and also assigned to nginx config in .docker/images/nginx/1.19/Dockerfile
+function process-domain(){
+  REPLACE_DOMAIN_STATUS=0
+  while [ $# -gt 0 ]; do
+    case $1 in
+      --host=*)
+        MAGENTO_DOMAIN_ARG="${1/--host=/''}"
+        ;;
+    esac
+    shift; 
+  done
+
+  if [[ $MAGENTO_DOMAIN_ARG != '' ]]; then
+    NEW_MAGENTO_DOMAIN="MAGENTO_DOMAIN=${MAGENTO_DOMAIN_ARG}"
+
+    # if domain is exist in config.env, replace it
+    while read config || [ -n "$config" ]; do 
+      if [[ $config == "MAGENTO_DOMAIN="* ]]; then
+        sed -i "s/$config/$NEW_MAGENTO_DOMAIN/gi" $MAGENTO_ENV
+        REPLACE_DOMAIN_STATUS=1
+      fi
+    done < $MAGENTO_ENV
+    
+    # if no domain in config.env, add it
+    if [[ $REPLACE_DOMAIN_STATUS != 1 ]]; then
+      echo "${NEW_MAGENTO_DOMAIN}" >> "${MAGENTO_ENV}"
+      echo -e "${GREEN}set magento domain : ${MAGENTO_DOMAIN_ARG} in ${MAGENTO_ENV} ${Color_Off}"
+    fi
+  fi
+
+}
+
+function get-magento-domain(){
+  while read config || [ -n "$config" ]; do 
+    if [[ $config == "MAGENTO_DOMAIN="* ]]; then
+      echo "${config/MAGENTO_DOMAIN=/""}"
+    fi
+  done < $MAGENTO_ENV
+}
+
 # start custom script
 set -e
 
@@ -182,6 +234,7 @@ case "$1" in
     ;;
   ece-docker)
     $BUILD_CONTAINER ./vendor/bin/ece-docker ${*:2}
+    process-domain $@
     ;;
   cloud-build)
     $BUILD_CONTAINER cloud-build ${*:2}

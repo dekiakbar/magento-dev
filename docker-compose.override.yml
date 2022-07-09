@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  web:
+    build:
+      context: ./.docker/images/nginx/1.19/
+  web:
+    build:
+      context: ./.docker/images/nginx/1.19/
