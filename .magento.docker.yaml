@@ -1,0 +1,59 @@
+name: app
+system:
+    mode: 'developer'
+services:
+    php:
+        version: '8.1'
+        extensions:
+            enabled:
+                - bcmath
+                - bz2
+                - calendar
+                - exif
+                - gd
+                - gettext
+                - intl
+                - mysqli
+                - pcntl
+                - pdo_mysql
+                - soap
+                - sockets
+                - sysvmsg
+                - sysvsem
+                - sysvshm
+                - zip
+                - xsl
+                - sodium
+                - opcache
+    mysql:
+        version: '10.4'
+        image: 'mariadb'
+    elasticsearch:
+        version: '7.11'
+        image: 'magento/magento-cloud-docker-elasticsearch'
+        environment:
+            - ES_JAVA_OPTS=-Xms512m
+            - ES_JAVA_OPTS=-Xmx512m
+    cron:
+        jobs:
+            run:
+                schedule: "* * * * *"
+                command: "php bin/magento cron:run"
+hooks:
+    build: |
+        set -e
+        php ./vendor/bin/ece-tools run scenario/build/generate.xml
+        php ./vendor/bin/ece-tools run scenario/build/transfer.xml
+    deploy: 'php ./vendor/bin/ece-tools run scenario/deploy.xml'
+    post_deploy: 'php ./vendor/bin/ece-tools run scenario/post-deploy.xml'
+mounts:
+    var:
+        path: 'var'
+    app-etc:
+        path: 'app/etc'
+    pub-media:
+        path: 'pub/media'
+    pub-static:
+        path: 'pub/static'
+variables:
+    PHP_MEMORY_LIMIT: 4096M
