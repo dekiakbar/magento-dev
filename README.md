@@ -10,7 +10,15 @@ Magento 2.4.4 with docker compose, just for custom module development purpose.
 
 Before using this, please install docker. 
 
-## Build image and start container
+## Build image, start container and install magento
 
-> docker-compose up --build --remove-orphans -d
-> run `bin/manager` from magento root for custom development script
+> bin/manager composer install -vvv
+> bin/manager install
+> bin/manager dev-mode (developer mode : optionally)
+
+# Available command
+- bin/manager
+
+# Note
+- use in/manager to run any magento, ece-tools, ece-docker command.
+- you can use docke command, i.e : docker-compose up
