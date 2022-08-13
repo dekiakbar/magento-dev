@@ -43,9 +43,6 @@ function install()
     --elasticsearch-port=9200 \
     --elasticsearch-index-prefix=magento2 \
     --elasticsearch-timeout=15
-    
-    #set as developer mode (custom)
-    dev-mode
   else
     echo -e "${GREEN} Magento domain not found in ${MAGENTO_ENV} ${Color_Off}"
   fi
@@ -227,10 +224,10 @@ case "$1" in
     $BUILD_CONTAINER composer ${*:2}
     ;;
   cs)
-    $BUILD_CONTAINER ./vendor/bin/phpcs ${*:2}
+    $BUILD_CONTAINER ./vendor/bin/phpcs --standard=Magento2 ${*:2}
     ;;
   cbf)
-    $BUILD_CONTAINER ./vendor/bin/phpcbf ${*:2}
+    $BUILD_CONTAINER ./vendor/bin/phpcbf --standard=Magento2 ${*:2}
     ;;
   ece-docker)
     $BUILD_CONTAINER ./vendor/bin/ece-docker ${*:2}
