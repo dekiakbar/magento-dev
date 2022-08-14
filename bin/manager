@@ -96,12 +96,14 @@ function clear-cache()
 function fullupgrade ()
 {
   echo -e "${On_Green}Running fullupgrade...${Color_Off}"
+  $DEPLOY_CONTAINER magento-command maintenance:enable
   echo -e "Running setup:upgrade..."
   $DEPLOY_CONTAINER magento-command setup:upgrade
   echo -e "Running setup:di:compile..."
   $DEPLOY_CONTAINER magento-command setup:di:compile
   echo -e "Running setup:static-content:deploy..."
   $DEPLOY_CONTAINER magento-command setup:static-content:deploy -f
+  $DEPLOY_CONTAINER magento-command maintenance:disable
 }
 
 function rebuild-container()
