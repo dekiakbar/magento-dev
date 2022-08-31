@@ -24,6 +24,7 @@ function install()
     $DEPLOY_CONTAINER rm -rf app/etc/config.php
     $DEPLOY_CONTAINER magento-command setup:install \
     --base-url="http://${MAGENTO_DOMAIN}/" \
+    --base-url-secure="https://${MAGENTO_DOMAIN}/" \
     --db-host="db.${MAGENTO_DOMAIN}"\
     --db-name=magento2 \
     --db-user=magento2 \
