@@ -25,7 +25,6 @@ function install()
     $DEPLOY_CONTAINER magento-command setup:install \
     --base-url="http://${MAGENTO_DOMAIN}/" \
     --base-url-secure="https://${MAGENTO_DOMAIN}/" \
-    --use-secure-admin=1 \
     --db-host="db.${MAGENTO_DOMAIN}"\
     --db-name=magento2 \
     --db-user=magento2 \
@@ -45,6 +44,10 @@ function install()
     --elasticsearch-port=9200 \
     --elasticsearch-index-prefix=magento2 \
     --elasticsearch-timeout=15
+    $DEPLOY_CONTAINER magento-command config:set web/secure/use_in_adminhtml 1
+    # if set to zero, sometime magento request via http, which cause error in console browser
+    $DEPLOY_CONTAINER magento-command config:set web/secure/enable_upgrade_insecure 1
+    clear-cache
   else
     echo -e "${GREEN} Magento domain not found in ${MAGENTO_ENV} ${Color_Off}"
   fi
@@ -67,12 +70,16 @@ function dev-mode()
   $DEPLOY_CONTAINER magento-command module:disable Magento_TwoFactorAuth
 
   # magento MTFT purpose
-  echo -e "Disable admin security form key"
-  $DEPLOY_CONTAINER magento-command config:set admin/security/use_form_key 0
-  echo -e "Disable secure in adminhtml"
-  $DEPLOY_CONTAINER magento-command config:set web/secure/use_in_adminhtml 0
-  echo -e "Enable admin account sharring"
-  $DEPLOY_CONTAINER magento-command config:set admin/security/admin_account_sharing 1
+  # echo -e "Disable admin security form key"
+  # $DEPLOY_CONTAINER magento-command config:set admin/security/use_form_key 0
+  # echo -e "Disable secure in adminhtml"
+  # $DEPLOY_CONTAINER magento-command config:set web/secure/use_in_adminhtml 0
+  # echo -e "Enable admin account sharring"
+  # $DEPLOY_CONTAINER magento-command config:set admin/security/admin_account_sharing 1
+
+  clear-compiled
+  clear-static
+  clear-cache
 }
 
 function clear-compiled()
