@@ -66,8 +66,8 @@ function dev-mode()
   $DEPLOY_CONTAINER magento-command config:set dev/template/allow_symlink 1
   echo -e "Disable static sign"
   $DEPLOY_CONTAINER magento-command config:set dev/static/sign 0
-  echo -e "Disable Magento_TwoFactorAuth module"
-  $DEPLOY_CONTAINER magento-command module:disable Magento_TwoFactorAuth
+  echo -e "Disable Magento_AdminAdobeImsTwoFactorAuth Magento_TwoFactorAuth module"
+  $DEPLOY_CONTAINER magento-command module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth
 
   # magento MTFT purpose
   # echo -e "Disable admin security form key"
