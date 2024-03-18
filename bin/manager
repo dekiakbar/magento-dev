@@ -131,6 +131,12 @@ function install-sample-data()
   fullupgrade
 }
 
+function run-cron()
+{
+  $BUILD_CONTAINER ece-command cron:enable
+  echo -e "Make sure cron container is running, or execute this: docker compose up cron -d"
+}
+
 # get --host value and asign to MAGENTO_DOMAIN var 
 # in .docker/config.env
 # this is used in docker compose when build new container
@@ -191,17 +197,18 @@ USAGE="Development script
   magento-docker        Run bin/magento-docker command. ie: bin/manager magento-docker --help
   composer              Run composer
   db-export             Export current Database
+  db                    Login to mysql CLI
   php                   run /bin/php
   
 \033[33mCLI container commands:\033[0m
-  ece-command           Run ece-tools / ece-command CLI commands. https://devdocs.magento.com/cloud/reference/ece-tools-reference.html
+  ece-tools             Run ece-tools / ece-command CLI commands. https://devdocs.magento.com/cloud/reference/ece-tools-reference.html
   ece-docker            Run ./vendor/bin/ece-docker command. ie: bin/manager ece-docker --help
   cloud-build           Build the application in production mode, configured by the build hook in the .magento.app.yml file
   cloud-deploy          Deploy the application, configured by the deploy hook in the .magento.app.yml file
   cloud-post-deploy     Run post deploy hooks, configured by the post deploy hook in the .magento.app.yml file
   cs                    Run ./vendor/bin/phpcs command (Coding standard). ie: bin/manager cs --help
   cbf                   Run ./vendor/bin/phpcbf command (Auto fix Coding standard). ie: bin/manager cbf --help
-  magento       Run bin/magento command. ie: bin/manager magento cache:flush
+  magento               Run bin/magento command. ie: bin/manager magento cache:flush
   mftf-command          Run MFTF command for testing
   run-cron              Run cron jobs
 \n"
@@ -266,10 +273,13 @@ case "$1" in
     $DEPLOY_CONTAINER mftf-command ${*:2}
     ;;
   run-cron)
-    docker compose run --rm --no-deps cron run-cron ${*:2}
+      run-cron
     ;;
   db-export)
     $DEPLOY_CONTAINER mysqldump -h db -umagento2 -pmagento2 magento2 > dbdump/$(date +'%Y-%m-%d_%H-%M-%S').sql
+    ;;
+  db)
+    docker compose exec db sh -c 'mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE "$@"'
     ;;
   php)
     $DEPLOY_CONTAINER php ${*:2}
